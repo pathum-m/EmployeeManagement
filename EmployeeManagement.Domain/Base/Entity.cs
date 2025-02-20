@@ -1,14 +1,14 @@
 ﻿namespace EmployeeManagement.Domain.Base;
 
-public abstract class Entity : IEquatable<Entity>
+public abstract class Entity<TId> : IEquatable<Entity<TId>> where TId : notnull
 {
-    protected Entity(Guid id) => Id = id;
+    protected Entity(TId id) => Id = id;
 
-    public Guid Id { get; private init; }
+    public TId Id { get; private init; }
 
-    public static bool operator ==(Entity? first, Entity? second) => first is not null && second is not null && first.Equals(second);
+    public static bool operator ==(Entity<TId>? first, Entity<TId>? second) => first is not null && second is not null && first.Equals(second);
 
-    public static bool operator !=(Entity? first, Entity second) => !(first == second);
+    public static bool operator !=(Entity<TId>? first, Entity<TId> second) => !(first == second);
 
     public override bool Equals(object? obj)
     {
@@ -22,15 +22,15 @@ public abstract class Entity : IEquatable<Entity>
             return false;
         }
 
-        if (obj is not Entity entity)
+        if (obj is not Entity<TId> entity)
         {
             return false;
         }
 
-        return entity.Id == Id;
+        return EqualityComparer<TId>.Default.Equals(entity.Id, Id);
     }
 
-    public bool Equals(Entity? other)
+    public bool Equals(Entity<TId>? other)
     {
         if (other == null)
         {
@@ -42,7 +42,7 @@ public abstract class Entity : IEquatable<Entity>
             return false;
         }
 
-        return other.Id == Id;
+        return EqualityComparer<TId>.Default.Equals(other.Id, Id);
     }
 
     public override int GetHashCode() => Id.GetHashCode();
