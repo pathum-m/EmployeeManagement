@@ -1,5 +1,9 @@
-﻿namespace EmployeeManagement.Domain.Abstractions.Repositories;
+﻿using EmployeeManagement.Domain.Entities;
+using EmployeeManagement.Domain.ValueObjects;
 
-internal interface IEmployeeRespository
+namespace EmployeeManagement.Domain.Abstractions.Repositories;
+
+public interface IEmployeeRespository : IRepository<Employee, EmployeeId>
 {
+
 }

@@ -10,10 +10,11 @@ public static class DomainError
         public static readonly Error InvalidEmail = new Error("Employee.InvalidEmail", "Invalid email format"); 
         public static readonly Error InvalidPhoneNumber = new Error("Employee.InvalidPhoneNumber", "Phone number must start with 8 or 9 and have 8 digits");
         public static readonly Error InvalidGender = new Error("Employee.InvalidGender", "Gender must be either Male or Female");
+        public static readonly Error EmptyName = new Error("Employee.EmptyName", "Employee name cannot be empty or null");
     }
 
     public static class Cafe
     {
-        public static readonly Error Test = new Error("Cafe.Test", "This is a test error message");
+        public static readonly Error EmptyName = new Error("Cafe.EmptyName", "Cafe name cannot be empty or null");
     }
 }

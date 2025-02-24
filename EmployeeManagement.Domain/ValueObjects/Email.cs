@@ -5,22 +5,24 @@ using EmployeeManagement.Domain.Shared;
 namespace EmployeeManagement.Domain.ValueObjects;
 public record Email
 {
-    private static readonly Regex EmailRegex = new(
-        @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$",
-        RegexOptions.Compiled);
+    private Email() => Value = string.Empty;
 
     private Email(string value) => Value = value;
 
     public string Value { get; }
 
-    public static Result<Email> Create(string value)
+    public static Result<Email> Create(string? value)
     {
-        if (string.IsNullOrWhiteSpace(value) || !EmailRegex.IsMatch(value.Trim()))
+        if (string.IsNullOrWhiteSpace(value) || !IsValidEmail(value))
         {
             return Result.Failure<Email>(DomainError.Employee.InvalidIDFormat);
         }
-        return new Email(value.Trim());
+        return new Email(value.Trim().ToLower());
     }
 
-    public override string ToString() => Value;
+    private static bool IsValidEmail(string email)
+    {
+        string emailPattern = @"^[^@\s]+@[^@\s]+\.[^@\s]+$"; // MS;
+        return Regex.IsMatch(email, emailPattern, RegexOptions.IgnoreCase);
+    }
 }

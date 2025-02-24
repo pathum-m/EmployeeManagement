@@ -15,4 +15,10 @@
     <ProjectReference Include="..\EmployeeManagement.Domain\EmployeeManagement.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Cafes\Queries\GetByLocation\" />
+    <Folder Include="Employee\Commands\" />
+    <Folder Include="Employee\Queries\" />
+  </ItemGroup>
+
 </Project>

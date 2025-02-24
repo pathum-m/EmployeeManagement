@@ -1,5 +1,10 @@
-﻿namespace EmployeeManagement.Domain.Abstractions.Repositories;
+﻿using EmployeeManagement.Domain.Entities;
+using EmployeeManagement.Domain.Shared;
+using EmployeeManagement.Domain.ValueObjects;
 
-internal interface ICafeRepository
+namespace EmployeeManagement.Domain.Abstractions.Repositories;
+
+public  interface ICafeRepository : IRepository<Cafe, CafeId>
 {
+    Task<Result<IEnumerable<Cafe>>> GetByLocationAsync(string location, CancellationToken cancellationToken = default);
 }

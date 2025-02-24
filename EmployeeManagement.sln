@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35527.113 d17.12
+VisualStudioVersion = 17.12.35527.113
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Backend", "Backend", "{68BBD711-8446-4DDA-BCC3-C95BA08301D5}"
 EndProject
@@ -17,8 +17,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmployeeManagement.Application", "EmployeeManagement.Application\EmployeeManagement.Application.csproj", "{DB2D143A-664B-449A-B7C3-6C86B5915E06}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmployeeManagement.Infrastructure", "EmployeeManagement.Infrastructure\EmployeeManagement.Infrastructure.csproj", "{114497C1-32E0-479F-843E-5AC9B2B1A9F4}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmployeeManagement.Shared", "EmployeeManagement.Shared\EmployeeManagement.Shared.csproj", "{8ED4F556-F44A-4E48-9868-B14CD3B073A4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmployeeManagement.WebAPI", "EmployeeManagement.WebAPI\EmployeeManagement.WebAPI.csproj", "{EB8D7652-1ECA-4F5C-81FC-5087DCBEB922}"
 EndProject
@@ -47,10 +45,6 @@ Global
 		{114497C1-32E0-479F-843E-5AC9B2B1A9F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{114497C1-32E0-479F-843E-5AC9B2B1A9F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{114497C1-32E0-479F-843E-5AC9B2B1A9F4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8ED4F556-F44A-4E48-9868-B14CD3B073A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8ED4F556-F44A-4E48-9868-B14CD3B073A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8ED4F556-F44A-4E48-9868-B14CD3B073A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8ED4F556-F44A-4E48-9868-B14CD3B073A4}.Release|Any CPU.Build.0 = Release|Any CPU
 		{EB8D7652-1ECA-4F5C-81FC-5087DCBEB922}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{EB8D7652-1ECA-4F5C-81FC-5087DCBEB922}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EB8D7652-1ECA-4F5C-81FC-5087DCBEB922}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -64,7 +58,6 @@ Global
 		{836097BD-A385-4D7B-A93E-E048444F8530} = {BF98B958-2AB6-494F-9A37-E5982001D517}
 		{DB2D143A-664B-449A-B7C3-6C86B5915E06} = {BF98B958-2AB6-494F-9A37-E5982001D517}
 		{114497C1-32E0-479F-843E-5AC9B2B1A9F4} = {BF98B958-2AB6-494F-9A37-E5982001D517}
-		{8ED4F556-F44A-4E48-9868-B14CD3B073A4} = {BF98B958-2AB6-494F-9A37-E5982001D517}
 		{EB8D7652-1ECA-4F5C-81FC-5087DCBEB922} = {BF98B958-2AB6-494F-9A37-E5982001D517}
 	EndGlobalSection
 EndGlobal

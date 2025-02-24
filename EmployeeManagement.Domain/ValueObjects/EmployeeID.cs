@@ -7,7 +7,11 @@ public record EmployeeId
     private const string PREFIX = "UI";
     private const int TOTAL_LENGTH = 9;
 
-    private EmployeeId(string value) => Value = value;
+#pragma warning disable CS8618
+    private EmployeeId() { }
+#pragma warning restore CS8618
+
+    public EmployeeId(string value) => Value = value;
 
     public string Value { get; }
 
@@ -24,7 +28,7 @@ public record EmployeeId
         return new EmployeeId(value);
     }
 
-    public static EmployeeId CreateNew()
+    public static EmployeeId GenerateID()
     {
         var random = new Random();
         const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -34,5 +38,4 @@ public record EmployeeId
         return new EmployeeId($"{PREFIX}{remainingPart}");
     }
 
-    public override string ToString() => Value;
 }

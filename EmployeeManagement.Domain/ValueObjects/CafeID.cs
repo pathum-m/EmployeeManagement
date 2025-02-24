@@ -1,21 +1,26 @@
-﻿using EmployeeManagement.Domain.Shared;
+﻿using EmployeeManagement.Domain.DomainErrors;
+using EmployeeManagement.Domain.Shared;
 
 namespace EmployeeManagement.Domain.ValueObjects;
-public record CafeID
+public record CafeId
 {
-    private CafeID(Guid value) => Value = value;
+#pragma warning disable CS8618
+    private CafeId() { }
+#pragma warning restore CS8618
 
-    public static CafeID CreateNew() => new(Guid.NewGuid());
+    public CafeId(Guid value) => Value = value;    
 
     public Guid Value { get; }
 
-    public static Result<CafeID> Create(Guid value)
+    public static Result<CafeId> Create(Guid value)
     {
         if (value == Guid.Empty)
         {
-            return Result.Failure<CafeID>(Error.Null);
+            return Result.Failure<CafeId>(DomainError.Employee.InvalidIDFormat);
         }
-        return new CafeID(value);
+        return new CafeId(value);
     }
+
+    public static CafeId GenerateID() => new(Guid.NewGuid());
     public override string ToString() => Value.ToString();
 }
