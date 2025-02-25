@@ -23,8 +23,14 @@ public static class DependencyInjection
             configuration.AddOpenBehavior(typeof(ValidationBehavior<,>));
             });
         services.AddValidatorsFromAssembly(assembly);
+        services.AddServices();
 
         return services;
     }
+
+    private static IServiceCollection AddServices(this IServiceCollection services) =>
+        //services.AddSingleton<ICafeRepository, CafeRe>();
+
+        services;
 }
 

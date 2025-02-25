@@ -11,7 +11,7 @@ public class Repository<TEntity, TID>
 
     public Repository(DbContext context) => m_dbset = context.Set<TEntity>();
 
-    public async Task<Result<TEntity>> Get(TID id, CancellationToken cancellationToken)
+    public async Task<Result<TEntity>> GetAsync(TID id, CancellationToken cancellationToken)
     {
         TEntity? result = await m_dbset.FindAsync(id, cancellationToken);
         if (result == null)
@@ -21,12 +21,11 @@ public class Repository<TEntity, TID>
         return Result.Success(result);
     }
 
-    public async Task Add(TEntity entity, CancellationToken cancellationToken) => await m_dbset.AddAsync(entity, cancellationToken);
+    public async Task AddAsync(TEntity entity, CancellationToken cancellationToken) => await m_dbset.AddAsync(entity, cancellationToken);
 
-    public void Delete(TEntity entity) => m_dbset.Remove(entity);
+    public void DeleteAsync(TEntity entity) => m_dbset.Remove(entity);
 
-
-    public async Task<Result<IEnumerable<TEntity>>> GetAll(CancellationToken cancellationToken)
+    public async Task<Result<IEnumerable<TEntity>>> GetAllAsync(CancellationToken cancellationToken)
     {
         List<TEntity> result = await m_dbset.ToListAsync(cancellationToken);
         if (result == null)
@@ -36,5 +35,5 @@ public class Repository<TEntity, TID>
         return Result.Success(result as IEnumerable<TEntity>);
     }
 
-    public void Update(TEntity entity, CancellationToken cancellationToken) => m_dbset.Update(entity);
+    public void UpdateAsync(TEntity entity, CancellationToken cancellationToken) => m_dbset.Update(entity);
 }

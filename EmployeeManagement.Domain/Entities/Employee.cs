@@ -43,6 +43,28 @@ public class Employee : Entity<EmployeeId>
         return new Employee(EmployeeId.GenerateID(), name, emailAddress, phoneNumber, gender);
     }
 
-    public void AssignToCafe(CafeId cafeId) => CafeId = cafeId;
+    //public void AssignToCafe(CafeId cafeId) => CafeId = cafeId;
+    public Result<bool> AssignToCafe(Cafe cafe, DateTime startDate)
+    {
+        if (CafeId != null && CafeId != cafe.Id)
+        {
+            return Result.Failure<bool>(DomainError.Employee.EmployeeAssignedForDifferentCafe);
+        }
+
+        CafeId = cafe.Id;
+        StartDate = DateOnly.FromDateTime(startDate);
+
+        return true;
+    }
+
+    public int CalculateDaysWorked()
+    {
+        if (CafeId == null) //If Employee has a cafe Id he must have a start date.
+        {
+            return 0;
+        }
+
+        return (DateTime.UtcNow.Date - StartDate.Value.ToDateTime(TimeOnly.MinValue)).Days;
+    }
 }
 

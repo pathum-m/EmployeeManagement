@@ -7,8 +7,7 @@ namespace EmployeeManagement.Domain.Entities;
 
 public class Cafe : Entity<CafeId>
 {
-    //private readonly List<Employee> _employees = new();
-    //public IReadOnlyCollection<Employee> Employees => _employees.AsReadOnly();
+    private readonly List<Employee> _employees = new();
 
     private Cafe() : base(default!) { }
 
@@ -23,10 +22,11 @@ public class Cafe : Entity<CafeId>
         Location = location;
     }
 
-    public string Name { get; private set; } = null!;
-    public string Description { get; private set; } = null!;
-    public string Location { get; private set; } = null!;
-    public string? Logo { get; private set; }
+    public string Name { get; set; } = null!;
+    public string Description { get; set; } = null!;
+    public string Location { get; set; } = null!;
+    public string? Logo { get; set; }
+    public IReadOnlyCollection<Employee> Employees => _employees.AsReadOnly();
 
     public static Result<Cafe> Create(
         string name,
@@ -52,4 +52,18 @@ public class Cafe : Entity<CafeId>
     }
 
     //public void AddEmployee(Employee employee) => _employees.Add(employee);
+    public Result<bool> AddEmployee(Employee employee, DateTime startDate)
+    {
+        if (employee.CafeId != null && employee.CafeId != Id)
+        {
+            return Result.Failure<bool>(DomainError.Cafe.InvalidEmployeeForCafe);
+        }
+
+        employee.AssignToCafe(this, startDate);
+        if (!_employees.Contains(employee))
+        {
+            _employees.Add(employee);
+        }
+        return true;
+    }
 }

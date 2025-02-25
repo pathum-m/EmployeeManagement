@@ -9,6 +9,8 @@
   <ItemGroup>
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" />
     <PackageReference Include="MediatR" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
+    <PackageReference Include="Serilog" />
   </ItemGroup>
 
   <ItemGroup>
@@ -16,9 +18,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Cafes\Queries\GetByLocation\" />
-    <Folder Include="Employee\Commands\" />
-    <Folder Include="Employee\Queries\" />
+    <Folder Include="Employees\Commands\Delete\" />
+    <Folder Include="Employees\Commands\Patch\" />
+    <Folder Include="Employees\Queries\GetById\" />
+    <Folder Include="Employees\Queries\Get\" />
   </ItemGroup>
 
 </Project>

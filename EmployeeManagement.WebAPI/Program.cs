@@ -1,5 +1,7 @@
 using EmployeeManagement.Application;
+using EmployeeManagement.Domain.Abstractions.Repositories;
 using EmployeeManagement.Infrastructure;
+using EmployeeManagement.Infrastructure.Repositories;
 using EmployeeManagement.WebAPI;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
