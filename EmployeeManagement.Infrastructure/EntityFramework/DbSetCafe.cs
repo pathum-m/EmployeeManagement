@@ -34,7 +34,7 @@ public class DbSetCafe : IEntityTypeConfiguration<Cafe>
 
         builder.HasMany<Employee>()
             .WithOne()
-            .HasForeignKey(e => e.CafeId)
+            .HasForeignKey(e => e.CurrentCafe)
             .OnDelete(DeleteBehavior.Cascade);
     }
 }

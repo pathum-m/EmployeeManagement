@@ -1,7 +1,6 @@
+using Carter;
 using EmployeeManagement.Application;
-using EmployeeManagement.Domain.Abstractions.Repositories;
 using EmployeeManagement.Infrastructure;
-using EmployeeManagement.Infrastructure.Repositories;
 using EmployeeManagement.WebAPI;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
@@ -10,7 +9,7 @@ WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 builder.Services
     .AddApplication()
-    .AddInfrastructure()
+    .AddInfrastructure(builder.Configuration)
     .AddPresentation();
 
 builder.Services.AddDbContext<EmployeeDBContext>(options => 
@@ -28,7 +27,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseSerilogRequestLogging();
-
+app.MapCarter();
 app.UseHttpsRedirection();
 
 await app.RunAsync();

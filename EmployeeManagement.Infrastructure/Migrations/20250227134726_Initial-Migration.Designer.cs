@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EmployeeManagement.Infrastructure.Migrations
 {
     [DbContext(typeof(EmployeeDBContext))]
-    [Migration("20250224035255_Initial-migration")]
-    partial class Initialmigration
+    [Migration("20250227134726_Initial-Migration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -72,6 +72,10 @@ namespace EmployeeManagement.Infrastructure.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("cafe_id");
 
+                    b.Property<Guid?>("CurrentCafe")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("current_cafe");
+
                     b.Property<string>("Gender")
                         .IsRequired()
                         .HasMaxLength(10)
@@ -94,16 +98,24 @@ namespace EmployeeManagement.Infrastructure.Migrations
                     b.HasIndex("CafeId")
                         .HasDatabaseName("ix_employee_cafe_id");
 
+                    b.HasIndex("CurrentCafe")
+                        .HasDatabaseName("ix_employee_current_cafe");
+
                     b.ToTable("employee", (string)null);
                 });
 
             modelBuilder.Entity("EmployeeManagement.Domain.Entities.Employee", b =>
                 {
                     b.HasOne("EmployeeManagement.Domain.Entities.Cafe", null)
-                        .WithMany()
+                        .WithMany("Employees")
                         .HasForeignKey("CafeId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .HasConstraintName("fk_employee_cafe_cafe_id");
+
+                    b.HasOne("EmployeeManagement.Domain.Entities.Cafe", null)
+                        .WithMany()
+                        .HasForeignKey("CurrentCafe")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .HasConstraintName("fk_employee_cafe_current_cafe");
 
                     b.OwnsOne("EmployeeManagement.Domain.ValueObjects.Email", "EmailAddress", b1 =>
                         {
@@ -134,8 +146,8 @@ namespace EmployeeManagement.Infrastructure.Migrations
 
                             b1.Property<string>("Value")
                                 .IsRequired()
-                                .HasMaxLength(50)
-                                .HasColumnType("nvarchar(50)")
+                                .HasMaxLength(15)
+                                .HasColumnType("nvarchar(15)")
                                 .HasColumnName("phone_number");
 
                             b1.HasKey("EmployeeId");
@@ -152,6 +164,11 @@ namespace EmployeeManagement.Infrastructure.Migrations
 
                     b.Navigation("PhoneNumber")
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("EmployeeManagement.Domain.Entities.Cafe", b =>
+                {
+                    b.Navigation("Employees");
                 });
 #pragma warning restore 612, 618
         }

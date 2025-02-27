@@ -54,7 +54,7 @@ public class Cafe : Entity<CafeId>
     //public void AddEmployee(Employee employee) => _employees.Add(employee);
     public Result<bool> AddEmployee(Employee employee, DateTime startDate)
     {
-        if (employee.CafeId != null && employee.CafeId != Id)
+        if (employee.CurrentCafe != null && employee.CurrentCafe != Id)
         {
             return Result.Failure<bool>(DomainError.Cafe.InvalidEmployeeForCafe);
         }

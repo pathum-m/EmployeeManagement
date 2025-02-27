@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Carter" />
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" />
     <PackageReference Include="MediatR" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
@@ -18,10 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Employees\Commands\Delete\" />
     <Folder Include="Employees\Commands\Patch\" />
-    <Folder Include="Employees\Queries\GetById\" />
-    <Folder Include="Employees\Queries\Get\" />
   </ItemGroup>
 
 </Project>

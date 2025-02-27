@@ -29,7 +29,7 @@ public class DbSetEmployee : IEntityTypeConfiguration<Employee>
         builder.OwnsOne(e => e.PhoneNumber,
                  navigationBuilder => navigationBuilder.Property(e => e.Value)
                                      .HasColumnName("phone_number")
-                                     .HasMaxLength(50));
+                                     .HasMaxLength(15));
 
         builder.Property(e => e.Gender)
            .HasConversion<GenderConvertor>()
@@ -41,8 +41,11 @@ public class DbSetEmployee : IEntityTypeConfiguration<Employee>
             .HasConversion<DateOnlyConvertor>()
             .HasColumnType("Date");
 
+        builder.Property(e => e.CurrentCafe)
+           .HasConversion<CafeIdConvertor>();
+
         builder.HasOne<Cafe>()
             .WithMany()
-            .HasForeignKey(e => e.CafeId);
+            .HasForeignKey(e => e.CurrentCafe);
     }
 }

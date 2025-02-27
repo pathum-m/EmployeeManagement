@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using Carter;
 using EmployeeManagement.Application.Common.Behaviors;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
@@ -23,6 +24,7 @@ public static class DependencyInjection
             configuration.AddOpenBehavior(typeof(ValidationBehavior<,>));
             });
         services.AddValidatorsFromAssembly(assembly);
+        services.AddCarter();
         services.AddServices();
 
         return services;
