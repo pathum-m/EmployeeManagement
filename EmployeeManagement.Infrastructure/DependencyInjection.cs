@@ -1,5 +1,8 @@
-﻿using EmployeeManagement.Domain.Abstractions.Repositories;
+﻿using EmployeeManagement.Application.Abstractions;
+using EmployeeManagement.Domain.Abstractions;
+using EmployeeManagement.Domain.Abstractions.Repositories;
 using EmployeeManagement.Infrastructure.Repositories;
+using EmployeeManagement.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,8 +17,10 @@ public static class DependencyInjection
 
     private static IServiceCollection AddServices(this IServiceCollection services) 
     {
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<ICafeRepository, CafeRepository>();
         services.AddScoped<IEmployeeRespository, EmployeeRepository>();
+        services.AddScoped<IImageService, ImageService>();
         return services;
     }
 
@@ -26,6 +31,7 @@ public static class DependencyInjection
         services.AddDbContext<EmployeeDBContext>(
             options => options
                 .UseSqlServer(connectionString));
+
 
         return services;
     }

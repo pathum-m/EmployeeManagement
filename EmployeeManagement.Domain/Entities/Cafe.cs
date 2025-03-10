@@ -28,11 +28,7 @@ public class Cafe : Entity<CafeId>
     public string? Logo { get; set; }
     public IReadOnlyCollection<Employee> Employees => _employees.AsReadOnly();
 
-    public static Result<Cafe> Create(
-        string name,
-        string description,
-        string location,
-        string? logo = null)
+    public static Result<Cafe> Create(string name, string description, string location, string? logo = null)
     {
         if (string.IsNullOrEmpty(name))
         {
@@ -51,15 +47,34 @@ public class Cafe : Entity<CafeId>
         return cafe;
     }
 
-    //public void AddEmployee(Employee employee) => _employees.Add(employee);
-    public Result<bool> AddEmployee(Employee employee, DateTime startDate)
+    public Result<bool> UpdateDetails(string name, string description, string location, string? logo = null)
+    {
+        if (string.IsNullOrEmpty(name))
+        {
+            return Result.Failure<bool>(DomainError.Cafe.EmptyName);
+        }
+
+        Name = name;
+        Description = description;
+        Location = location;
+        Logo = logo;
+
+        return true;
+    }
+
+    public Result<bool> AddEmployee(Employee employee)
     {
         if (employee.CurrentCafe != null && employee.CurrentCafe != Id)
         {
             return Result.Failure<bool>(DomainError.Cafe.InvalidEmployeeForCafe);
         }
 
-        employee.AssignToCafe(this, startDate);
+        Result<bool> assignmentResult = employee.AssignToCafe(this, DateTime.UtcNow);
+        if (assignmentResult.IsFailure)
+        {
+            return Result.Failure<bool>(assignmentResult.Error);
+        }
+
         if (!_employees.Contains(employee))
         {
             _employees.Add(employee);

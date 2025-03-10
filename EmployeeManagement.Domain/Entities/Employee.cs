@@ -20,7 +20,6 @@ public class Employee : Entity<EmployeeId>
         EmailAddress = emailAddress;
         PhoneNumber = phoneNumber;
         Gender = gender;
-        //StartDate = DateOnly.FromDateTime(DateTime.UtcNow);
     }
 
     public string Name { get; private set; } = null!;
@@ -43,28 +42,49 @@ public class Employee : Entity<EmployeeId>
         return new Employee(EmployeeId.GenerateID(), name, emailAddress, phoneNumber, gender);
     }
 
-    //public void AssignToCafe(CafeId cafeId) => CafeId = cafeId;
+    public Result<bool> UpdateDetails(string name, Email email, PhoneNumber phone, Gender gender)
+    {
+        if (string.IsNullOrEmpty(name))
+        {
+            return Result.Failure<bool>(DomainError.Employee.EmptyName);
+        }
+
+        Name = name;
+        EmailAddress = email;
+        PhoneNumber = phone;
+        Gender = gender;
+
+        return true;
+    }
+
     public Result<bool> AssignToCafe(Cafe cafe, DateTime startDate)
     {
         if (CurrentCafe != null && CurrentCafe != cafe.Id)
         {
             return Result.Failure<bool>(DomainError.Employee.EmployeeAssignedForDifferentCafe);
         }
-
         CurrentCafe = cafe.Id;
         StartDate = DateOnly.FromDateTime(startDate);
-
         return true;
     }
 
     public int CalculateDaysWorked()
     {
-        if (CurrentCafe == null) //If Employee has a cafe Id he must have a start date.
+        if (CurrentCafe == null || !StartDate.HasValue) //If Employee has a cafe Id he must have a start date.
         {
             return 0;
         }
 
         return (DateTime.UtcNow.Date - StartDate.Value.ToDateTime(TimeOnly.MinValue)).Days;
     }
+
+    //public void TransferToNewCafe(CafeId newCafeId)
+    //{
+    //    if (newCafeId == null)
+    //    {
+    //        throw new IllegalArgumentException("Cafe ID cannot be null");
+    //    }
+    //    this.cafeId = newCafeId;
+    //}
 }
 

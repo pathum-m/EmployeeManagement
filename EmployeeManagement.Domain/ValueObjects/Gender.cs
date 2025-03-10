@@ -23,9 +23,17 @@ public record Gender
         {
             "male" => Male,
             "female" => Female,
+            //here we can add more gender types if needed, else send error
             _ => Result.Failure<Gender>(DomainError.Employee.InvalidGender)
         };
     }
+
+    public static Result<Gender> FromInt(int value) => value switch
+    {
+        (int)GenderType.Male => Male,
+        (int)GenderType.Female => Female,
+        _ => Result.Failure<Gender>(DomainError.Employee.InvalidGender)
+    };
 
     public override string ToString() => Value.ToString();
 }

@@ -31,8 +31,8 @@ namespace EmployeeManagement.Infrastructure.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)")
                         .HasColumnName("description");
 
                     b.Property<string>("Location")
@@ -48,14 +48,30 @@ namespace EmployeeManagement.Infrastructure.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)")
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)")
                         .HasColumnName("name");
 
                     b.HasKey("Id")
                         .HasName("pk_cafe");
 
                     b.ToTable("cafe", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("517f64d9-09b3-4632-8af1-0ee4c7b21ccb"),
+                            Description = "Test edscription ABC",
+                            Location = "Colombo",
+                            Name = "Cafe ABC"
+                        },
+                        new
+                        {
+                            Id = new Guid("24dad7de-c26f-4d2c-81d3-22422e088c65"),
+                            Description = "Test edscription DEF",
+                            Location = "Galle",
+                            Name = "Cafe DEF"
+                        });
                 });
 
             modelBuilder.Entity("EmployeeManagement.Domain.Entities.Employee", b =>
@@ -71,18 +87,16 @@ namespace EmployeeManagement.Infrastructure.Migrations
 
                     b.Property<Guid?>("CurrentCafe")
                         .HasColumnType("uniqueidentifier")
-                        .HasColumnName("current_cafe");
+                        .HasColumnName("cafe_id");
 
-                    b.Property<string>("Gender")
-                        .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)")
+                    b.Property<int>("Gender")
+                        .HasColumnType("int")
                         .HasColumnName("gender");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)")
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)")
                         .HasColumnName("name");
 
                     b.Property<DateTime?>("StartDate")
@@ -98,7 +112,25 @@ namespace EmployeeManagement.Infrastructure.Migrations
                     b.HasIndex("CurrentCafe")
                         .HasDatabaseName("ix_employee_current_cafe");
 
-                    b.ToTable("employee", (string)null);
+                    b.ToTable("employee", null, t =>
+                        {
+                            t.Property("CafeId")
+                                .HasColumnName("cafe_id1");
+                        });
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "UI1FF17YL",
+                            Gender = 0,
+                            Name = "Employee_1"
+                        },
+                        new
+                        {
+                            Id = "UITN4VM3N",
+                            Gender = 1,
+                            Name = "Employee_2"
+                        });
                 });
 
             modelBuilder.Entity("EmployeeManagement.Domain.Entities.Employee", b =>
@@ -112,7 +144,7 @@ namespace EmployeeManagement.Infrastructure.Migrations
                         .WithMany()
                         .HasForeignKey("CurrentCafe")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .HasConstraintName("fk_employee_cafe_current_cafe");
+                        .HasConstraintName("FK_Employee_Cafe");
 
                     b.OwnsOne("EmployeeManagement.Domain.ValueObjects.Email", "EmailAddress", b1 =>
                         {
@@ -128,11 +160,27 @@ namespace EmployeeManagement.Infrastructure.Migrations
 
                             b1.HasKey("EmployeeId");
 
+                            b1.HasIndex("Value")
+                                .IsUnique()
+                                .HasDatabaseName("ix_employee_email");
+
                             b1.ToTable("employee");
 
                             b1.WithOwner()
                                 .HasForeignKey("EmployeeId")
                                 .HasConstraintName("fk_employee_employee_id");
+
+                            b1.HasData(
+                                new
+                                {
+                                    EmployeeId = "UI1FF17YL",
+                                    Value = "abc@mail.com"
+                                },
+                                new
+                                {
+                                    EmployeeId = "UITN4VM3N",
+                                    Value = "edf@mail.com"
+                                });
                         });
 
                     b.OwnsOne("EmployeeManagement.Domain.ValueObjects.PhoneNumber", "PhoneNumber", b1 =>
@@ -143,17 +191,33 @@ namespace EmployeeManagement.Infrastructure.Migrations
 
                             b1.Property<string>("Value")
                                 .IsRequired()
-                                .HasMaxLength(15)
-                                .HasColumnType("nvarchar(15)")
+                                .HasMaxLength(8)
+                                .HasColumnType("nvarchar(8)")
                                 .HasColumnName("phone_number");
 
                             b1.HasKey("EmployeeId");
+
+                            b1.HasIndex("Value")
+                                .IsUnique()
+                                .HasDatabaseName("ix_employee_phone_number");
 
                             b1.ToTable("employee");
 
                             b1.WithOwner()
                                 .HasForeignKey("EmployeeId")
                                 .HasConstraintName("fk_employee_employee_id");
+
+                            b1.HasData(
+                                new
+                                {
+                                    EmployeeId = "UI1FF17YL",
+                                    Value = "97654321"
+                                },
+                                new
+                                {
+                                    EmployeeId = "UITN4VM3N",
+                                    Value = "87654321"
+                                });
                         });
 
                     b.Navigation("EmailAddress")

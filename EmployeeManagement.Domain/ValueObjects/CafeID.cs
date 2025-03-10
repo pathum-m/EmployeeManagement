@@ -12,13 +12,13 @@ public record CafeId
 
     public Guid Value { get; }
 
-    public static Result<CafeId> Create(Guid value)
+    public static Result<CafeId> Create(Guid? value)
     {
-        if (value == Guid.Empty)
+        if (value == null || value == Guid.Empty)
         {
             return Result.Failure<CafeId>(DomainError.Employee.InvalidIDFormat);
         }
-        return new CafeId(value);
+        return new CafeId(value.Value);
     }
 
     public static CafeId GenerateID() => new(Guid.NewGuid());

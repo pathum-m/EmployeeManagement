@@ -2,17 +2,19 @@
 using EmployeeManagement.Domain.Shared;
 using MediatR;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 
 namespace EmployeeManagement.Application.Cafes;
 public partial class CafeEndpoints
 {
-    public record GetCafesRequest(string Location);
+    //If we need morre filter parameters other than location we can use Request record for that
+    //public record GetCafesRequest(string Location);
 
-    public static async Task<IResult> GetCafesEndpoint(GetCafesRequest request, ISender sender, CancellationToken cancellationToken)
+    public static async Task<IResult> GetCafesEndpoint([FromQuery] string? location, ISender sender, CancellationToken cancellationToken)
     {
         var query = new GetCafesQuery
         (
-            request.Location
+            location
         );
 
         Result<List<CafeDto>> result = await sender.Send(query, cancellationToken);

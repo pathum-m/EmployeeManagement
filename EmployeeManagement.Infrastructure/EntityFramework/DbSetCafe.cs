@@ -18,11 +18,11 @@ public class DbSetCafe : IEntityTypeConfiguration<Cafe>
             .HasColumnName("id");
 
         builder.Property(c => c.Name)
-            .HasMaxLength(100)
+            .HasMaxLength(10)
             .IsRequired();
 
         builder.Property(c => c.Description)
-            .HasMaxLength(500)
+            .HasMaxLength(256)
             .IsRequired();
 
         builder.Property(c => c.Location)
@@ -36,5 +36,20 @@ public class DbSetCafe : IEntityTypeConfiguration<Cafe>
             .WithOne()
             .HasForeignKey(e => e.CurrentCafe)
             .OnDelete(DeleteBehavior.Cascade);
+
+        builder.HasData(
+            Cafe.Create
+            (
+                "Cafe ABC",
+                "Test edscription ABC",
+                "Colombo"
+            ).Value,
+            Cafe.Create
+            (
+                "Cafe DEF",
+                "Test edscription DEF",
+                "Galle"
+            ).Value
+        );
     }
 }

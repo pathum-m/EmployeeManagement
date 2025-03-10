@@ -1,9 +1,9 @@
 ﻿using FluentValidation;
 
-namespace EmployeeManagement.Application.Cafes.Commands.Create;
-internal class CreateCafeCommandValidator : AbstractValidator<CreateCafeCommand>
+namespace EmployeeManagement.Application.Cafes.Commands.Patch;
+public class PatchCafeCommandValidator : AbstractValidator<PatchCafeCommand>
 {
-    public CreateCafeCommandValidator()
+    public PatchCafeCommandValidator()
     {
         RuleFor(x => x.Name)
             .NotEmpty()

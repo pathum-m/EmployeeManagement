@@ -2,5 +2,5 @@
 using MediatR;
 
 namespace EmployeeManagement.Application.Cafes.Queries.Get;
-public record GetCafesQuery(string Location) : IRequest<Result<List<CafeDto>>>;
+public record GetCafesQuery(string? Location) : IRequest<Result<List<CafeDto>>>;
 

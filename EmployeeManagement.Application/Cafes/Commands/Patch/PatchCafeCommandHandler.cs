@@ -1,19 +1,19 @@
-﻿using EmployeeManagement.Domain.Abstractions.Repositories;
-using MediatR;
+﻿using EmployeeManagement.Domain.Abstractions;
 using EmployeeManagement.Domain.Entities;
 using EmployeeManagement.Domain.Shared;
-using System.ComponentModel.DataAnnotations;
+using FluentValidation;
+using MediatR;
 using Microsoft.Extensions.Logging;
 
 namespace EmployeeManagement.Application.Cafes.Commands.Patch;
 public sealed class PatchCafeCommandHandler : IRequestHandler<PatchCafeCommand, Result<bool>>
 {
-    private readonly ICafeRepository _cafeRepository;
+    private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<PatchCafeCommandHandler> _logger;
 
-    public PatchCafeCommandHandler(ICafeRepository cafeRepository, ILogger<PatchCafeCommandHandler> logger)
+    public PatchCafeCommandHandler(IUnitOfWork unitOfWork, ILogger<PatchCafeCommandHandler> logger)
     {
-        _cafeRepository = cafeRepository;
+        _unitOfWork = unitOfWork;
         _logger = logger;
     }
 
@@ -21,8 +21,7 @@ public sealed class PatchCafeCommandHandler : IRequestHandler<PatchCafeCommand, 
     {
         try
         {
-            Result<Cafe> cafeResult = await _cafeRepository.GetAsync(command.Id, cancellationToken);
-
+            Result<Cafe> cafeResult = await _unitOfWork.Cafes.GetAsync(command.Id, cancellationToken);
             if (cafeResult.IsFailure)
             {
                 _logger.LogWarning("Could not find the Cafe ID: {CafeId}", command.Id.Value);
@@ -30,14 +29,17 @@ public sealed class PatchCafeCommandHandler : IRequestHandler<PatchCafeCommand, 
             }
 
             Cafe cafe = cafeResult.Value;
-            cafe.Name = command.Name;
-            cafe.Description = command.Description;
-            cafe.Location = command.Location;
+            Result<bool> updateResult = cafe.UpdateDetails(command.Name, command.Description, command.Location, command.Logo);
+            if (updateResult.IsFailure)
+            {
+                _logger.LogError("Updating cafe {CafeName} has failed: ", command.Name);
+                return false;
+            }
 
-            _cafeRepository.UpdateAsync(cafe, cancellationToken);
+            _unitOfWork.Cafes.UpdateAsync(cafe, cancellationToken);
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
 
             _logger.LogInformation("Cafe updated successfully with ID: {CafeId}", cafe.Id.Value);
-
             return true;
         }
         catch (Exception ex) when (ex is not ValidationException)

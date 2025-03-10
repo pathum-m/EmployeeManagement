@@ -6,21 +6,21 @@ using Microsoft.AspNetCore.Http;
 namespace EmployeeManagement.Application.Cafes;
 public partial class CafeEndpoints : CarterModule
 {
-    public CafeEndpoints() : base("api") => WithTags("Cafe"); // for Swagger
+    public CafeEndpoints() : base("api/cafes") => WithTags("Cafe"); // for Swagger
 
     public override void AddRoutes(IEndpointRouteBuilder app)
     {
-        app.MapGet("cafes/{location:string}", GetCafesEndpoint)
+        app.MapGet("", GetCafesEndpoint)
             .WithSummary("List of cafes")
             .WithDescription("A list of cafes of a given location. If locatoin is invalid return empty list. If location not provided returns all the cafes");
 
-        app.MapPost("cafe", CafePostEndpoint)
+        app.MapPost("", CafePostEndpoint)
            .AllowAnonymous();
 
-        //app.MapPatch("current", CafeUpdateEndpoint)
-        //  .AllowAnonymous();
+        app.MapPatch("{id:guid}", CafePatchEndpoint)
+          .AllowAnonymous();
 
-        //app.MapPost("delete", CafeDeleteEndpoint)
-        //  .AllowAnonymous();
+        app.MapDelete("{id:guid}", CafeDeleteEndpoint)
+          .AllowAnonymous();
     }
 }

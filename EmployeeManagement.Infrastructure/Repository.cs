@@ -7,13 +7,18 @@ namespace EmployeeManagement.Infrastructure;
 public class Repository<TEntity, TID>
     : IRepository<TEntity, TID> where TEntity : class
 {
+    protected readonly DbContext _context;
     protected readonly DbSet<TEntity> m_dbset;
 
-    public Repository(DbContext context) => m_dbset = context.Set<TEntity>();
+    public Repository(DbContext context)
+    {
+        _context = context ?? throw new ArgumentNullException(nameof(context));
+        m_dbset = context.Set<TEntity>();
+    }
 
     public async Task<Result<TEntity>> GetAsync(TID id, CancellationToken cancellationToken)
     {
-        TEntity? result = await m_dbset.FindAsync(id, cancellationToken);
+        TEntity? result = await m_dbset.FindAsync(id);
         if (result == null)
         {
             return Result.Failure<TEntity>(Error.NotFound);
@@ -36,4 +41,6 @@ public class Repository<TEntity, TID>
     }
 
     public void UpdateAsync(TEntity entity, CancellationToken cancellationToken) => m_dbset.Update(entity);
+
+    //public async Task<int> SaveChangesAsync(CancellationToken cancellationToken) => await _context.SaveChangesAsync(cancellationToken);
 }

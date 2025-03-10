@@ -1,16 +1,27 @@
 ﻿using Carter;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 
 namespace EmployeeManagement.Application.Employees;
 public partial class EmployeeEndpoints : CarterModule
 {
-    public EmployeeEndpoints() : base("api/employees") => WithTags("Cafe"); // for Swagger
+    public EmployeeEndpoints() : base("api/employees") => WithTags("Employee"); // for Swagger
 
     public override void AddRoutes(IEndpointRouteBuilder app)
-    {
-        //app.MapGet("{location}", GetCafesEndpoint)
-        //    .WithSummary("List of employees for a cafe")
-        //    .WithDescription("A list of employees of a given cafe");
+    {        
+        app.MapGet("{cafeId:Guid}", GetEmployeesByCafeEndpoint)
+            .WithSummary("List of employees of a cafe")
+            .WithDescription("List of employees of a cafe")
+            .AllowAnonymous();
+
+        app.MapPost("", EmployeePostEndpoint)
+           .AllowAnonymous();
+
+        app.MapPatch("{id}", EmployeePatchEndpoint)
+          .AllowAnonymous();
+
+        app.MapDelete("{id}", EmployeeDeleteEndpoint)
+          .AllowAnonymous();
     }
 }
