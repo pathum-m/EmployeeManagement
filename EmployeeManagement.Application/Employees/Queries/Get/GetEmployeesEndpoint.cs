@@ -3,11 +3,12 @@ using EmployeeManagement.Domain.Shared;
 using EmployeeManagement.Domain.ValueObjects;
 using MediatR;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 
 namespace EmployeeManagement.Application.Employees;
 public partial class EmployeeEndpoints
 {
-    public static async Task<IResult> GetEmployeesByCafeEndpoint(Guid cafeId, ISender sender, CancellationToken cancellationToken)
+    public static async Task<IResult> GetEmployeesByCafeEndpoint([FromQuery] Guid? cafeId, ISender sender, CancellationToken cancellationToken)
     {
         Result<CafeId> idResult = CafeId.Create(cafeId);
 

@@ -1,5 +1,4 @@
 ﻿using EmployeeManagement.Domain.Abstractions;
-using EmployeeManagement.Domain.Entities;
 using EmployeeManagement.Domain.Shared;
 using MediatR;
 using Microsoft.Extensions.Logging;
@@ -20,9 +19,19 @@ public class GetEmployeesQueryHandler : IRequestHandler<GetEmployeesQuery, Resul
     {
         try
         {
-            Result<IEnumerable<Employee>> employeesResult = query.CafeId != null
-                    ? await _unitOfWork.Employees.GetByCafeIdAsync(query.CafeId, cancellationToken)
-                    : await _unitOfWork.Employees.GetAllAsync(cancellationToken);
+            Result<IEnumerable<EmployeeDto>> employeesResult = await _unitOfWork.Employees.GetEmployeesWithCafeNameAsync(query.CafeId,
+            (employee, cafe) => new EmployeeDto
+            (
+                employee.Id.Value,
+                employee.Name,
+                employee.EmailAddress.Value,
+                employee.PhoneNumber.Value,
+                employee.Gender.ToString(),
+                employee.CalculateDaysWorked(),
+                cafe
+            ),
+            cancellationToken);
+
             if (employeesResult.IsFailure)
             {
                 _logger.LogError("Fetching employees request has failed: Params {Query}", query);
@@ -30,15 +39,6 @@ public class GetEmployeesQueryHandler : IRequestHandler<GetEmployeesQuery, Resul
             }
 
             var employeeDtos = employeesResult.Value
-                .Select(e => new EmployeeDto
-                (
-                    e.Id.Value,
-                    e.Name,
-                    e.EmailAddress.Value,
-                    e.PhoneNumber.Value,
-                    e.Gender.ToString(),
-                    e.CalculateDaysWorked()
-                ))
                 .OrderByDescending(e => e.DaysWorked)
                 .ToList();
 

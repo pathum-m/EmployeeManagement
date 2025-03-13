@@ -6,5 +6,6 @@ public record EmployeeDto
     string EmailAddress,
     string PhoneNumber,
     string Gender,
-    int DaysWorked
+    int DaysWorked,
+    string Cafe 
 );

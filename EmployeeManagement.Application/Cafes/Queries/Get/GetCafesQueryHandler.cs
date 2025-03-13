@@ -1,6 +1,5 @@
 ﻿using EmployeeManagement.Domain.Abstractions;
 using EmployeeManagement.Domain.Shared;
-using EmployeeManagement.Domain.ValueObjects.DomainResponses;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
@@ -20,7 +19,19 @@ public class GetCafesQueryHandler : IRequestHandler<GetCafesQuery, Result<List<C
     {
         try
         {
-            Result<IEnumerable<CafeWithEmployeeCount>> cafesResult = await _unitOfWork.Cafes.GetByLocationAsync(query.Location, cancellationToken);
+            //Result<IEnumerable<CafeWithEmployeeCount>> cafesResult = await _unitOfWork.Cafes.GetByLocationAsync(query.Location, cancellationToken);
+
+            Result<IEnumerable<CafeDto>> cafesResult = await _unitOfWork.Cafes.GetCafesByLocationAsync(query.Location,
+            (cafe, employeeCount) => new CafeDto
+            (
+                cafe.Id.Value,
+                cafe.Name,
+                cafe.Description,
+                cafe.Location,
+                cafe.Logo,
+                employeeCount
+            ), cancellationToken);
+
             if (cafesResult.IsFailure)
             {
                 _logger.LogError("Fetching cafes request has failed: Params {Query}", query);
@@ -28,14 +39,6 @@ public class GetCafesQueryHandler : IRequestHandler<GetCafesQuery, Result<List<C
             }
 
             var cafeDtos = cafesResult.Value
-                .Select(c => new CafeDto(
-                    c.Id,
-                    c.Name,
-                    c.Description,
-                    c.Location,
-                    c.Logo,
-                    c.EmployeeCount
-                ))
                 .OrderByDescending(c => c.Employees)
                 .ToList();
 

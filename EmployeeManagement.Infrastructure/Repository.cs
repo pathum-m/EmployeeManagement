@@ -41,6 +41,4 @@ public class Repository<TEntity, TID>
     }
 
     public void UpdateAsync(TEntity entity, CancellationToken cancellationToken) => m_dbset.Update(entity);
-
-    //public async Task<int> SaveChangesAsync(CancellationToken cancellationToken) => await _context.SaveChangesAsync(cancellationToken);
 }

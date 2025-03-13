@@ -77,14 +77,5 @@ public class Employee : Entity<EmployeeId>
 
         return (DateTime.UtcNow.Date - StartDate.Value.ToDateTime(TimeOnly.MinValue)).Days;
     }
-
-    //public void TransferToNewCafe(CafeId newCafeId)
-    //{
-    //    if (newCafeId == null)
-    //    {
-    //        throw new IllegalArgumentException("Cafe ID cannot be null");
-    //    }
-    //    this.cafeId = newCafeId;
-    //}
 }
 

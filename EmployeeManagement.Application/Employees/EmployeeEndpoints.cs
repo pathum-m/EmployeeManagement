@@ -10,7 +10,7 @@ public partial class EmployeeEndpoints : CarterModule
 
     public override void AddRoutes(IEndpointRouteBuilder app)
     {        
-        app.MapGet("{cafeId:Guid}", GetEmployeesByCafeEndpoint)
+        app.MapGet("", GetEmployeesByCafeEndpoint)
             .WithSummary("List of employees of a cafe")
             .WithDescription("List of employees of a cafe")
             .AllowAnonymous();

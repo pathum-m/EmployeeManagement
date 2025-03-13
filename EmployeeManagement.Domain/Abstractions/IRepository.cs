@@ -8,5 +8,4 @@ public interface IRepository<TEntity, TID> where TEntity : class
     void DeleteAsync(TEntity entity);
     Task<Result<IEnumerable<TEntity>>> GetAllAsync(CancellationToken cancellationToken);
     void UpdateAsync(TEntity entity, CancellationToken cancellationToken);
-    //Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 }

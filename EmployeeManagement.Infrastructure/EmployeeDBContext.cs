@@ -1,8 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using EmployeeManagement.Domain.Entities;
 using EmployeeManagement.Domain.ValueObjects;
-using EmployeeManagement.Domain.ValueObjects.DomainResponses;
-
 
 namespace EmployeeManagement.Infrastructure;
 public class EmployeeDBContext : DbContext
